@@ -1,24 +1,13 @@
 extends CharacterBody2D
 
 @onready var camera = $Camera2D
-@onready var ground_ray = $GroundRay
-@onready var animated_sprite = $AnimatedSprite
+@onready var animated_sprite = $AnimatedSprite2D
 
-# Movement variables
-@export var jump_force = 400
-@export var max_speed = 200
-@export var acceleration = 1000
-@export var friction = 800
-@export var gravity = 800
-@export var coyote_time = 0.1
+const SPEED = 120.0
+const JUMP_VELOCITY = -350.0
+var push_force = 25.0
 
-# Push force for rigid bodies
-@export var push_force = 80.0
-
-var coyote_timer = 0
-var direction = 0
-var jump_pressed = false
-var jump_released = false
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _enter_tree():
 	set_multiplayer_authority(name.to_int())
@@ -26,44 +15,46 @@ func _enter_tree():
 func _ready():
 	if is_multiplayer_authority():
 		camera.make_current()
-	animated_sprite.play("idle")  # Add this line to play the "idle" animation by default
+		animated_sprite.play("idle")
 
 func _physics_process(delta):
 	if is_multiplayer_authority():
-		# Get input
-		direction = Input.get_axis("ui_left", "ui_right")
-		jump_pressed = Input.is_action_just_pressed("jump")
-		jump_released = Input.is_action_just_released("jump")
+		# Add the gravity.
+		if not is_on_floor():
+			velocity.y += gravity * delta
 
-		# Apply gravity
-		velocity.y += gravity * delta
+		# Handle jump.
+		if Input.is_action_just_pressed("jump") and is_on_floor():
+			velocity.y = JUMP_VELOCITY
 
-		# Handle horizontal movement
-		if direction != 0:
-			velocity.x = move_toward(velocity.x, direction * max_speed, acceleration * delta)
+		# Get the input direction and handle the movement/deceleration.
+		var direction = Input.get_axis("ui_left", "ui_right")
+		if direction:
+			velocity.x = direction * SPEED
 			animated_sprite.flip_h = direction < 0
 			animated_sprite.play("walking")
 		else:
-			velocity.x = move_toward(velocity.x, 0, friction * delta)
+			velocity.x = move_toward(velocity.x, 0, SPEED)
 			animated_sprite.play("idle")
 
-		# Handle jumping
-		if ground_ray.is_colliding():
-			coyote_timer = coyote_time
-		else:
-			coyote_timer -= delta
-
-		if jump_pressed and coyote_timer > 0:
-			velocity.y = -jump_force
-			coyote_timer = 0
-		elif jump_released and velocity.y < 0:
-			velocity.y *= 0.5
-
-		# Apply movement
 		move_and_slide()
 
-		# Interact with rigid bodies
-		#for i in get_slide_collision_count():
-		#	var c = get_slide_collision(i)
-		#	if c.get_collider() is RigidBody2D:
-		#		c.get_collider().apply_central_impulse(-c.get_normal() * push_force)
+		# Handle collision with RigidBody2D
+		for index in range(get_slide_collision_count()):
+			var collision = get_slide_collision(index)
+			if collision.get_collider() is RigidBody2D:
+				var collider = collision.get_collider()
+				var collision_normal = collision.get_normal()
+
+				# Apply impulse to the RigidBody2D
+				var impulse = -collision_normal * push_force
+				collider.apply_central_impulse(impulse)
+
+
+
+#Player Death
+
+@rpc("any_peer")
+func player_died(player_id):
+	# Notify the level script about player death
+	get_parent().rpc("player_died", player_id)

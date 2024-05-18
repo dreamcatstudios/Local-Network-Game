@@ -72,9 +72,6 @@ func get_spawn_point(peer_id):
 	
 	return spawn_point
 
-func _on_door_1_trigger_body_entered(body):
-	$DoorNodes/DoorAnimation.play("door1")
-	$DoorNodes/Door1Trigger.visible = false
 
 func _on_checkpoint_body_entered(body):
 	if body.is_in_group("player"):
@@ -147,3 +144,14 @@ func respawn_player(checkpoint_position, spawn_point, offset):
 		position = checkpoint_position + offset
 	else:
 		position = spawn_point + offset
+
+
+
+#<--- Door Related Code ---->
+func _on_door_1_trigger_body_entered(body):
+	$DoorNodes/DoorAnimation.play("door1")
+	$DoorNodes/Door1Trigger.visible = false
+	
+func _on_door_1_trigger_2_body_entered(body):
+	$DoorNodes/DoorAnimation.play("door2")
+	$DoorNodes/Door2.visible = false

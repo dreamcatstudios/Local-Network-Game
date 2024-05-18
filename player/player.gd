@@ -4,8 +4,8 @@ extends CharacterBody2D
 @onready var animated_sprite = $AnimatedSprite2D
 
 const SPEED = 120.0
-const JUMP_VELOCITY = -320.0
-var push_force = 25.0
+const JUMP_VELOCITY = -315.0
+var push_force = 20.0
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _ready():

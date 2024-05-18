@@ -1,4 +1,3 @@
-# Main.gd
 extends Control
 
 var peer = ENetMultiplayerPeer.new()
@@ -59,8 +58,15 @@ func _on_join_pressed():
 
 func _on_player_connected(peer_id):
 	print("Player connected: ", peer_id)
+
 	if multiplayer.get_peers().size() >= max_players:
 		print("Maximum player limit reached. Cannot add more players.")
+		return
+
+	# Check if the player is already spawned
+	var existing_player = get_node_or_null("player_" + str(peer_id))
+	if existing_player:
+		print("Player with peer ID ", peer_id, " already exists. Skipping spawn.")
 		return
 
 	if multiplayer.is_server():

@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://b0n4bmgwdm0yy"]
+[gd_scene load_steps=48 format=3 uid="uid://b0n4bmgwdm0yy"]
 
 [ext_resource type="Script" path="res://levels/level1/level1.gd" id="1_3xra3"]
 [ext_resource type="PackedScene" uid="uid://8tsdxyyikwsd" path="res://player/player.tscn" id="2_1qde5"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://b6lpkvs7f2b82" path="res://teleportation.tscn" id="10_3cu25"]
 [ext_resource type="PackedScene" uid="uid://7bb0k5i0stdc" path="res://mechanics/anti_gravity.tscn" id="11_j5kp0"]
 [ext_resource type="PackedScene" uid="uid://ddc1pj63tx1os" path="res://doorTriggerWeight.tscn" id="12_2paxb"]
+[ext_resource type="PackedScene" uid="uid://cbs4pgaj4fme0" path="res://spring.tscn" id="13_1tfdn"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mhvq0"]
 properties/0/path = NodePath("DoorNodes/DoorAnimation:process_thread_group")
@@ -1707,7 +1708,7 @@ position = Vector2(829, 317)
 position = Vector2(2290, 312)
 
 [node name="Door3" type="StaticBody2D" parent="DoorWeight"]
-position = Vector2(2568, 288.336)
+position = Vector2(2568, 311.963)
 rotation = 1.5708
 scale = Vector2(1.35, 1)
 
@@ -1739,6 +1740,11 @@ layer_0/tile_data = PackedInt32Array(1376256, 65536, 2, 1441792, 65536, 2, 14417
 libraries = {
 "": SubResource("AnimationLibrary_0rnfa")
 }
+
+[node name="Spring" type="Node" parent="."]
+
+[node name="Spring" parent="Spring" instance=ExtResource("13_1tfdn")]
+position = Vector2(2452, 182)
 
 [connection signal="body_entered" from="Checkpoint1" to="." method="_on_checkpoint_body_entered"]
 [connection signal="body_entered" from="DoorNodes/Door1Trigger" to="." method="_on_door_1_trigger_body_entered"]

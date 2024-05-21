@@ -123,6 +123,12 @@ properties/4/replication_mode = 1
 properties/5/path = NodePath("AnimatedSprite2D:flip_v")
 properties/5/spawn = true
 properties/5/replication_mode = 1
+properties/6/path = NodePath(".:process_thread_group")
+properties/6/spawn = true
+properties/6/replication_mode = 1
+properties/7/path = NodePath(".:push_force")
+properties/7/spawn = true
+properties/7/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_mechc")

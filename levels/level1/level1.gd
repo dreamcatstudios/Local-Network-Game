@@ -121,6 +121,7 @@ func _on_death_area_body_entered(body):
 @rpc("any_peer", "call_local")
 func player_died(player_id):
 	# Respawn both players at the last checkpoint or spawn points
+	$ResetLevel.play("reset")
 	var checkpoint_position = load_checkpoint()
 	for player in get_tree().get_nodes_in_group("player"):
 		var peer_id = int(str(player.name).replace("player_", ""))
@@ -155,3 +156,57 @@ func _on_door_1_trigger_body_entered(body):
 func _on_door_1_trigger_2_body_entered(body):
 	$DoorNodes/DoorAnimation.play("door2")
 	$DoorNodes/Door2.visible = false
+ 
+#<--- Door Related Code ---->
+
+#<--- Teleportation Related Code ---->
+
+func _on_teleportation_body_entered(body):
+	if body is RigidBody2D:
+		print("Rigid Body Entered Teleportation!")
+		
+		# Teleport the body using set_deferred
+		body.set_deferred("global_position", $Teleportation/teleportation2.global_position + Vector2(50, 0))
+		body.set_deferred("linear_velocity", Vector2.ZERO)
+		
+	elif body is CharacterBody2D:
+		print("Character Body Entered Teleportation!")
+		body.global_position = $Teleportation/teleportation2.global_position + Vector2(40, 0)
+
+func _on_teleportation_2_body_entered(body):
+	if body is RigidBody2D:
+		print("Rigid Body Entered Teleportation!")
+		
+		# Teleport the body using set_deferred
+		body.set_deferred("global_position", $Teleportation/teleportation.global_position + Vector2(50, 0))
+		body.set_deferred("linear_velocity", Vector2.ZERO)
+		
+	elif body is CharacterBody2D:
+		print("Character Body Entered Teleportation!")
+		body.global_position = $Teleportation/teleportation.global_position + Vector2(40, 0)
+
+
+#<--- Teleportation Related Code ---->
+
+
+
+
+
+
+#<--- DoorWeight Related Code ---->
+
+func _on_door_trigger_weight_body_entered(body):
+	if body.is_in_group("player") or body.is_in_group("boxes"):
+		$DoorWeight/DoorWeightAnimation.play("doorWeight1_enter")
+		$DoorWeight/AnimationTree.set("parameters/blend_position", Vector2(0.0, 1.0))  # doorWeight1_enter
+
+func _on_door_trigger_weight_body_exited(body):
+	if body.is_in_group("player") or body.is_in_group("boxes"):
+		$DoorWeight/DoorWeightAnimation.play("doorWeight1_exit")
+		$DoorWeight/AnimationTree.set("parameters/blend_position", Vector2(0.0, -1.0))  # doorWeight1_exit
+
+
+#<--- DoorWeight Related Code ---->
+
+
+

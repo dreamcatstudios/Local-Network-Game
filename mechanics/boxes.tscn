@@ -19,8 +19,6 @@ properties/2/replication_mode = 1
 
 [node name="Boxes" type="RigidBody2D" groups=["boxes"]]
 mass = 1.5
-can_sleep = false
-freeze_mode = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1.49012e-07, -5.96046e-08)

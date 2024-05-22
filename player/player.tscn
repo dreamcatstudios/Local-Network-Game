@@ -1,7 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://8tsdxyyikwsd"]
+[gd_scene load_steps=20 format=3 uid="uid://8tsdxyyikwsd"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_mechc"]
 [ext_resource type="Texture2D" uid="uid://c85ls4bn2wdt" path="res://assets/16x16 Robot Tileset v1.png" id="2_61hjo"]
+[ext_resource type="AudioStream" uid="uid://c1lxluli0rm6l" path="res://sounds/jump.wav" id="3_hkroh"]
+[ext_resource type="AudioStream" uid="uid://2dp71ebnpdwy" path="res://sounds/explosion.wav" id="4_5i2vb"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i146n"]
 atlas = ExtResource("2_61hjo")
@@ -131,6 +133,7 @@ properties/7/spawn = true
 properties/7/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
+z_index = 5
 script = ExtResource("1_mechc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -149,3 +152,10 @@ position_smoothing_enabled = true
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_ukisy")
+
+[node name="JumpSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_hkroh")
+volume_db = -10.0
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_5i2vb")

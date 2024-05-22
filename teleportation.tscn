@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://b6lpkvs7f2b82"]
+[gd_scene load_steps=11 format=3 uid="uid://b6lpkvs7f2b82"]
 
 [ext_resource type="Texture2D" uid="uid://cetwxelreokmh" path="res://assets/particles/circle_04.png" id="1_4conn"]
+[ext_resource type="AudioStream" uid="uid://btyywqt0edjcd" path="res://sounds/power_up.wav" id="2_ocff5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h1m13"]
 size = Vector2(84.9819, 129.116)
@@ -72,8 +73,7 @@ _data = {
 }
 
 [node name="Teleportation" type="Area2D"]
-rotation = 0.0587924
-scale = Vector2(0.199289, 0.199289)
+scale = Vector2(0.2, 0.2)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1.48051, 3.08997e-07)
@@ -95,3 +95,7 @@ libraries = {
 "": SubResource("AnimationLibrary_e63wg")
 }
 autoplay = "rotate"
+
+[node name="TeleportSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_ocff5")
+volume_db = -10.0

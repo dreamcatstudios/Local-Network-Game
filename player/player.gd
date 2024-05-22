@@ -21,6 +21,7 @@ func _physics_process(delta):
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+		$JumpSound.play()
 
 	# Get the input direction and handle the movement/deceleration.
 	var direction = Input.get_axis("ui_left", "ui_right")
@@ -45,6 +46,7 @@ func _physics_process(delta):
 			# Apply impulse to the RigidBody2D locally
 			collider.apply_central_impulse(-collision_normal * push_force)
 			# Notify other peers to apply the impulse
+	
 			rpc("apply_impulse", collider.get_path(), -collision_normal * push_force)
 
 	# Synchronize the player's position and velocity with clients
@@ -68,4 +70,6 @@ func update_player_state(new_position, new_velocity):
 @rpc("any_peer")
 func player_died(player_id):
 	# Notify the level script about player death
+	$DeathSound.play()
 	get_parent().rpc("player_died", player_id)
+
